@@ -1,7 +1,7 @@
 <template>
   <div class="header">
-    <router-link to="/News">News</router-link> |
-    <router-link to="/Ask">Ask</router-link> |
+    <router-link to="/News">News</router-link><span>|</span>
+    <router-link to="/Ask">Ask</router-link><span>|</span>
     <router-link to="/Jobs">Jobs</router-link>
   </div>
 </template>
@@ -21,8 +21,13 @@ export default {
 }
 .header a {
   color:#fff;
+  text-decoration:none;
+  font-weight:700;
 }
 .header a.router-link-exact-active {
   color:#35495e;
+}
+.header span {
+  margin:0 15px;
 }
 </style>
