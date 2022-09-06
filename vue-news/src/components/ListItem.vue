@@ -1,16 +1,16 @@
 <template>
   <div>
     <ul class="news-list">
-      <li v-for="item in listItems" class="post">
+      <li v-for="(item, index) in listItems" class="post" :key="index">
         <!-- 포인트 영역 -->
         <div class="points">
-          {{ item.points || 0 }}
+          {{ index | indexPlus }}
         </div>
         <!-- 기타 정보 영역 -->
         <div>
           <!-- 타이틀 영역 -->
           <p class="news-title">
-            <template v-if="item.domain">
+            <template v-if="item.url">
               <a v-bind:href="item.url" target="_blank">
                 {{ item.title }}
               </a>
@@ -22,9 +22,10 @@
             </template>
           </p>
           <small class="link-text">
-            {{ item.time_ago }} by
-            <router-link v-if="item.user" v-bind:to="`/user/${item.user}`" class="link-text">
-              {{ item.user }}
+            {{ item.score }} points |
+            {{ item.time | timeAgo }} ago | by
+            <router-link v-if="item.by" v-bind:to="`/user/${item.by}`" class="link-text">
+              {{ item.by }}
             </router-link>
             <a :href="'http://' + item.domain" target="_blank" v-else>
               {{ item.domain }}
@@ -37,10 +38,25 @@
 </template>
 
 <script>
+import { timeAgo } from '../utils/filters.js'
+
 export default {
   computed: {
     listItems() {
-      return this.$store.state.list;
+      const name = this.$route.name;
+      if (name === 'news') {
+        return this.$store.state.news;
+      } else if (name === 'ask') {
+        return this.$store.state.ask;
+      } else {
+        return this.$store.state.jobs;
+      }
+    },
+  },
+  filters: {
+    timeAgo,
+    indexPlus(tn) {
+      return tn + 1;
     }
   }
 }

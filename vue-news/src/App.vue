@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ToolBar></ToolBar>
-    <transition name="page">
+    <transition name="page" mode="out-in">
       <router-view></router-view>
     </transition>
     <Spinner :loading="loadingStatus"></Spinner>
@@ -32,16 +32,17 @@ export default {
     }
   },
   created() {
+    
     bus.$on('start:spinner', this.startSpinner);
     bus.$on('end:spinner', this.endSpinner);
 
     // .env
-    console.log(process.env.VUE_APP_TITLE);
+    // console.log(process.env.VUE_APP_TITLE);
   },
-  beforeDestroy() {
-    bus.$off('start:spinner', this.startSpinner);
-    bus.$off('end:spinner', this.endSpinner);
-  }
+  // beforeDestroy() {
+  //   bus.$off('start:spinner', this.startSpinner);
+  //   bus.$off('end:spinner', this.endSpinner);
+  // }
 }
 </script>
 
@@ -65,11 +66,11 @@ a.router-link-exact-active {
 /* Router Transition */
 .page-enter-active,
 .page-leave-active {
-  transition: opacity .7s ease;
+  transition: opacity .5s ease;
 }
-
-.page-enter-from,
+.page-enter,
 .page-leave-to {
   opacity: 0;
 }
+
 </style>

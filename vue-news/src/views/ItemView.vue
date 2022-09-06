@@ -24,6 +24,7 @@
 <script>
 import UserProfile from '../components/UserProfile.vue'
 import { mapGetters } from 'vuex';
+import bus from '../utils/bus';
 
 export default {
   components: {
@@ -34,8 +35,10 @@ export default {
   },
   created() {
     const item = this.$route.params.id;
-
     this.$store.dispatch('FETCH_ITEM', item);
+  },
+  mounted() {
+    bus.$emit('end:spinner');
   }
 }
 </script>

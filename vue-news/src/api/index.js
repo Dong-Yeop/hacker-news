@@ -2,23 +2,44 @@ import axios from 'axios';
 
 const config = {
   baseUrl: 'https://api.hnpwa.com/v0/',
+  // baseUrl: 'https://hacker-news.firebaseio.com/v0/item/8863.json?print=pretty',
 }
 
-function fetchNewsList() {
-  // ex5 
-  // return axios.get(config.baseUrl + 'news/1.json'); 
-
-  // ex6 
-  return axios.get(`${config.baseUrl}news/1.json`); 
+async function fetchGetNews() {
+  try {
+    let itemId = [];
+    const response = await axios.get('https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty');
+    itemId = response.data;
+    return itemId;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function fetchJobsList() {
-  return axios.get(`${config.baseUrl}jobs/1.json`); 
+async function fetchNewsList() {
+  let items = [];
+  fetchGetNews().then(itemId => {
+    itemId.forEach(id => {
+      axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then( res => {
+        items.push(res.data);
+      });
+    });   
+  });
+  console.log(items);
+  return items;
+}
+
+async function fetchJobsList() {
+  try {
+    const response = await axios.get(`${config.baseUrl}jobs/1.json`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function fetchAskList() {
   try {
-    // return await axios.get(`${config.baseUrl}ask/1.json`);
     const response = await axios.get(`${config.baseUrl}ask/1.json`);
     return response;
   } catch (error) {
@@ -26,8 +47,13 @@ async function fetchAskList() {
   }
 }
 
-function fetchList(pageName) {
-  return axios.get(`${config.baseUrl}${pageName}/1.json`);
+async function fetchList(pageName) {
+  try {
+    const response = await axios.get(`${config.baseUrl}${pageName}/1.json`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function fetchUserInfo(username) {

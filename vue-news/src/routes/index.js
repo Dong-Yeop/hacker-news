@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import NewsView from '../views/NewsView.vue';
-import AskView from '../views/AskView.vue';
-import JobsView from '../views/JobsView.vue';
+// import NewsView from '../views/NewsView.vue';
+// import AskView from '../views/AskView.vue';
+// import JobsView from '../views/JobsView.vue';
 import UserView from '../views/UserView.vue';
 import ItemView from '../views/ItemView.vue';
-// import CreateListView from '../views/CreateListView.js';
 import bus from '../utils/bus.js';
 import { store } from '../store/index.js';
 
@@ -21,52 +20,51 @@ export const router = new VueRouter({
     {
       path: '/news', // path: url 주소
       name: 'news',
-      component: NewsView, // url 주소로 갔을 때 표시될 컴포넌트
-      // component: CreateListView('NewsView'),
-      // beforeEnter: (to, from, next) => {
-      //   bus.$emit('start:spinner');
-      //   store.dispatch('FETCH_LIST', to.name)
-      //     .then(() => {
-      //       next();
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //     });
-      // },
+      component: () => import('../views/NewsView.vue'),
+      beforeEnter: (to, from, next) => {
+        bus.$emit('start:spinner');
+        store.dispatch('FETCH_NEWS', to.name)
+          .then(() => {
+            next();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
     },
     {
       path: '/ask',
       name: 'ask', 
-      component: AskView,
-      // beforeEnter: (to, from, next) => {
-      //   bus.$emit('start:spinner');
-      //   store.dispatch('FETCH_LIST', to.name)
-      //     .then(() => {
-      //       next();
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //     });
-      // },
+      component: () => import('../views/AskView.vue'),
+      beforeEnter: (to, from, next) => {
+        bus.$emit('start:spinner');
+        store.dispatch('FETCH_ASK', to.name)
+          .then(() => {
+            next();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
     },
     {
       path: '/jobs', 
       name: 'jobs',
-      component: JobsView,
-      // beforeEnter: (to, from, next) => {
-      //   bus.$emit('start:spinner');
-      //   store.dispatch('FETCH_LIST', to.name)
-      //     .then(() => {
-      //       next();
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //     });
-      // },
+      component: () => import('../views/JobsView.vue'),
+      beforeEnter: (to, from, next) => {
+        bus.$emit('start:spinner');
+        store.dispatch('FETCH_JOBS', to.name)
+          .then(() => {
+            next();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
     },
     {
       path: '/user/:id',
-      component: UserView
+      component: UserView,
     },
     {
       path: '/item/:id',

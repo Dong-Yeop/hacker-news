@@ -1,29 +1,24 @@
-import { fetchNewsList, fetchJobsList, fetchAskList, fetchUserInfo, fetchItemInfo, fetchList} from '../api/index.js';
+import { fetchNewsList, fetchUserInfo, fetchItemInfo, fetchList } from '../api/index.js';
 
 export default {
-  async FETCH_NEWS(context){
+  async FETCH_NEWS({ commit },) {
     const response = await fetchNewsList();
-    context.commit('SET_NEWS', response.data);
+    commit('SET_NEWS', response);
     return response;
   },
-  // FETCH_NEWS(context){
-  //   return fetchNewsList()
-  //     .then(response => {
-  //       context.commit('SET_NEWS', response.data);
-  //       return response;
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
+  // async FETCH_NEWS({ commit }, pageName) {
+  //   const response = await fetchList(pageName);
+  //   commit('SET_NEWS', response.data);
+  //   return response;
   // },
-  async FETCH_JOBS({ commit }) {
-    const response = await fetchJobsList();
-    commit('SET_JOBS', response.data);
+  async FETCH_ASK({ commit }, pageName) {
+    const response = await fetchList(pageName);
+    commit('SET_ASK', response.data);
     return response;
   },
-  async FETCH_ASK({ commit }) {
-    const response = await fetchAskList();
-    commit('SET_ASK', response.data);
+  async FETCH_JOBS({ commit }, pageName) {
+    const response = await fetchList(pageName);
+    commit('SET_JOBS', response.data);
     return response;
   },
   FETCH_USER({ commit }, name ){
@@ -44,14 +39,9 @@ export default {
         console.log(error)
       });
   },
-  // FETCH_LIST({ commit }, pageName){
-  //   return fetchList(pageName)
-  //     .then(({ data }) => commit('SET_LIST', data))
-  //     .catch(error => console.log(error));
-  // },
-  async FETCH_LIST({ commit }, pageName) {
-    const response = await fetchList(pageName);
-    commit('SET_LIST', response.data);
-    return response;
-  }
+  // async FETCH_LIST({ commit }, pageName) {
+  //   const response = await fetchList(pageName);
+  //   commit('SET_LIST', response.data);
+  //   return response;
+  // }
 }

@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import UserProfile from '../components/UserProfile.vue'
+import UserProfile from '../components/UserProfile.vue';
+import bus from '../utils/bus';
 
 export default {
   components: {
@@ -24,6 +25,9 @@ export default {
     const userName = this.$route.params.id;
     this.$store.dispatch('FETCH_USER', userName);
   },
+  mounted() {
+    bus.$emit('end:spinner');
+  }
 }
 </script>
 
