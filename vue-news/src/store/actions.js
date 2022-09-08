@@ -1,24 +1,19 @@
-import { fetchNewsList, fetchUserInfo, fetchItemInfo, fetchList } from '../api/index.js';
+import { fetchNewsList, fetchUserInfo, fetchItemInfo, } from '../api/index.js';
 
 export default {
-  async FETCH_NEWS({ commit },) {
-    const response = await fetchNewsList();
+  async FETCH_NEWS({ commit }, pageName) {
+    const response = await fetchNewsList(pageName);
     commit('SET_NEWS', response);
     return response;
   },
-  // async FETCH_NEWS({ commit }, pageName) {
-  //   const response = await fetchList(pageName);
-  //   commit('SET_NEWS', response.data);
-  //   return response;
-  // },
   async FETCH_ASK({ commit }, pageName) {
-    const response = await fetchList(pageName);
-    commit('SET_ASK', response.data);
+    const response = await fetchNewsList(pageName);
+    commit('SET_ASK', response);
     return response;
   },
   async FETCH_JOBS({ commit }, pageName) {
-    const response = await fetchList(pageName);
-    commit('SET_JOBS', response.data);
+    const response = await fetchNewsList(pageName);
+    commit('SET_JOBS', response);
     return response;
   },
   FETCH_USER({ commit }, name ){

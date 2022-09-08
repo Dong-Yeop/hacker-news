@@ -18,6 +18,9 @@ export default {
   background:#42b883;
   display:flex;
   padding:8px;
+  height:40px;
+  align-items: center;
+  box-sizing:border-box;
 }
 .header a {
   color:#fff;

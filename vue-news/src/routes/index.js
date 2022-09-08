@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import NewsView from '../views/NewsView.vue';
-// import AskView from '../views/AskView.vue';
-// import JobsView from '../views/JobsView.vue';
+import NewsView from '../views/NewsView.vue';
+import AskView from '../views/AskView.vue';
+import JobsView from '../views/JobsView.vue';
 import UserView from '../views/UserView.vue';
 import ItemView from '../views/ItemView.vue';
 import bus from '../utils/bus.js';
@@ -18,9 +18,10 @@ export const router = new VueRouter({
       redirect: '/news'
     },
     {
-      path: '/news', // path: url 주소
-      name: 'news',
-      component: () => import('../views/NewsView.vue'),
+      path: '/news',
+      name: 'new',
+      component: NewsView,
+      // component: () => import('../views/NewsView.vue'),
       beforeEnter: (to, from, next) => {
         bus.$emit('start:spinner');
         store.dispatch('FETCH_NEWS', to.name)
@@ -35,7 +36,8 @@ export const router = new VueRouter({
     {
       path: '/ask',
       name: 'ask', 
-      component: () => import('../views/AskView.vue'),
+      component: AskView,
+      // component: () => import('../views/AskView.vue'),
       beforeEnter: (to, from, next) => {
         bus.$emit('start:spinner');
         store.dispatch('FETCH_ASK', to.name)
@@ -49,8 +51,9 @@ export const router = new VueRouter({
     },
     {
       path: '/jobs', 
-      name: 'jobs',
-      component: () => import('../views/JobsView.vue'),
+      name: 'job',
+      component: JobsView,
+      // component: () => import('../views/JobsView.vue'),
       beforeEnter: (to, from, next) => {
         bus.$emit('start:spinner');
         store.dispatch('FETCH_JOBS', to.name)

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="news-list">
+    <ul class="news-list" @scroll="handleNotificationListScroll">
       <li v-for="(item, index) in listItems" class="post" :key="index">
         <!-- 포인트 영역 -->
         <div class="points">
@@ -38,13 +38,20 @@
 </template>
 
 <script>
-import { timeAgo } from '../utils/filters.js'
+import { timeAgo } from '../utils/filters.js';
 
 export default {
+  data() {
+    return {
+      pageBefore: 0,
+      pageAfter: 20,
+      page: 1,
+    };
+  },
   computed: {
     listItems() {
       const name = this.$route.name;
-      if (name === 'news') {
+      if (name === 'new') {
         return this.$store.state.news;
       } else if (name === 'ask') {
         return this.$store.state.ask;
@@ -52,6 +59,29 @@ export default {
         return this.$store.state.jobs;
       }
     },
+  },
+  methods: {
+    infiniteHandler() {
+      const name = this.$route.name;
+
+      if (name === 'new') {
+        console.log(name)
+      } else if (name === 'ask') {
+        console.log(name)
+      } else if (name === 'job') {
+        console.log(name)
+      }
+    },
+    handleNotificationListScroll(e) {
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+      // 일정 한도 밑으로 내려오면 함수 실행
+      if (isAtTheBottom) this.handleLoadMore();
+      console.log(scrollTop);
+    },
+    handleLoadMore() {
+      console.log('hi');
+    }
   },
   filters: {
     timeAgo,
@@ -65,6 +95,9 @@ export default {
 <style scoped>
 .news-list {
   margin:0; padding:0;
+  overflow:auto;
+  height:calc(100vh - 40px);
+  box-sizing:border-box;
 }
 .post {
   list-style:none;

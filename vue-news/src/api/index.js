@@ -1,31 +1,29 @@
 import axios from 'axios';
 
 const config = {
-  baseUrl: 'https://api.hnpwa.com/v0/',
-  // baseUrl: 'https://hacker-news.firebaseio.com/v0/item/8863.json?print=pretty',
+  baseUrl: 'https://hacker-news.firebaseio.com/v0/',
 }
 
-async function fetchGetNews() {
+async function fetchGetNews(pageName) {
   try {
     let itemId = [];
-    const response = await axios.get('https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty');
-    itemId = response.data;
+    const response = await axios.get(`${config.baseUrl}${pageName}stories.json?print=pretty`);
+    itemId = response.data.slice(0,20);
     return itemId;
   } catch (error) {
     console.log(error);
   }
 }
 
-async function fetchNewsList() {
+async function fetchNewsList(pageName) {
   let items = [];
-  fetchGetNews().then(itemId => {
+  fetchGetNews(pageName).then(itemId => {
     itemId.forEach(id => {
-      axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then( res => {
+      axios.get(`${config.baseUrl}item/${id}.json`).then( res => {
         items.push(res.data);
       });
-    });   
+    });
   });
-  console.log(items);
   return items;
 }
 
@@ -72,4 +70,5 @@ export {
   fetchList,
   fetchUserInfo,
   fetchItemInfo,
+  fetchGetNews,
 }
