@@ -1,5 +1,5 @@
 <template>
-  <div class="loader" v-if="loading">Loading...</div>
+  <div class="loader" :class="className" v-if="loading">Loading...</div>
 </template>
 
 <script>
@@ -8,6 +8,11 @@ export default {
     loading: {
       type: Boolean,
       required: true,
+    },
+  },
+  computed: {
+    className() {
+      return this.$route.name;
     },
   },
 }
@@ -26,6 +31,7 @@ export default {
   animation: load7 1.8s infinite ease-in-out;
 }
 .loader {
+  transition:color .5s ease;
   color: #42b883;
   font-size: 10px;
   position: fixed; top:50%; left:50%;
@@ -37,6 +43,8 @@ export default {
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 }
+.loader.ask {color:#f60;}
+.loader.job {color:#990000;}
 .loader:before,
 .loader:after {
   content: '';

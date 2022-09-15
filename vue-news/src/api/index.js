@@ -4,54 +4,27 @@ const config = {
   baseUrl: 'https://hacker-news.firebaseio.com/v0/',
 }
 
-async function fetchGetNews(pageName) {
+async function fetchGet(pageName) {
   try {
     let itemId = [];
     const response = await axios.get(`${config.baseUrl}${pageName}stories.json?print=pretty`);
-    itemId = response.data.slice(0,20);
+    itemId = response.data;
     return itemId;
   } catch (error) {
     console.log(error);
   }
 }
 
-async function fetchNewsList(pageName) {
+async function fetchList(pageName) {
   let items = [];
-  fetchGetNews(pageName).then(itemId => {
-    itemId.forEach(id => {
+  fetchGet(pageName).then(itemId => {
+    itemId.slice(0,20).forEach(id => {
       axios.get(`${config.baseUrl}item/${id}.json`).then( res => {
         items.push(res.data);
       });
     });
   });
   return items;
-}
-
-async function fetchJobsList() {
-  try {
-    const response = await axios.get(`${config.baseUrl}jobs/1.json`);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function fetchAskList() {
-  try {
-    const response = await axios.get(`${config.baseUrl}ask/1.json`);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function fetchList(pageName) {
-  try {
-    const response = await axios.get(`${config.baseUrl}${pageName}/1.json`);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
 }
 
 function fetchUserInfo(username) {
@@ -64,11 +37,8 @@ function fetchItemInfo(id) {
 
 
 export {
-  fetchNewsList,
-  fetchJobsList,
-  fetchAskList,
   fetchList,
+  fetchGet,
   fetchUserInfo,
   fetchItemInfo,
-  fetchGetNews,
 }

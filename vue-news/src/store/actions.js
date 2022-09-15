@@ -1,19 +1,25 @@
-import { fetchNewsList, fetchUserInfo, fetchItemInfo, } from '../api/index.js';
+import { fetchList, fetchUserInfo, fetchItemInfo, fetchGet } from '../api/index.js';
 
 export default {
   async FETCH_NEWS({ commit }, pageName) {
-    const response = await fetchNewsList(pageName);
+    const response = await fetchList(pageName);
+    const response2 = await fetchGet(pageName);
     commit('SET_NEWS', response);
+    commit('SET_LIST_ID', response2);
     return response;
   },
   async FETCH_ASK({ commit }, pageName) {
-    const response = await fetchNewsList(pageName);
+    const response = await fetchList(pageName);
+    const response2 = await fetchGet(pageName);
     commit('SET_ASK', response);
+    commit('SET_LIST_ID', response2);
     return response;
   },
   async FETCH_JOBS({ commit }, pageName) {
-    const response = await fetchNewsList(pageName);
+    const response = await fetchList(pageName);
+    const response2 = await fetchGet(pageName);
     commit('SET_JOBS', response);
+    commit('SET_LIST_ID', response2);
     return response;
   },
   FETCH_USER({ commit }, name ){
@@ -34,9 +40,4 @@ export default {
         console.log(error)
       });
   },
-  // async FETCH_LIST({ commit }, pageName) {
-  //   const response = await fetchList(pageName);
-  //   commit('SET_LIST', response.data);
-  //   return response;
-  // }
 }

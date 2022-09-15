@@ -21,7 +21,6 @@ export const router = new VueRouter({
       path: '/news',
       name: 'new',
       component: NewsView,
-      // component: () => import('../views/NewsView.vue'),
       beforeEnter: (to, from, next) => {
         bus.$emit('start:spinner');
         store.dispatch('FETCH_NEWS', to.name)
@@ -37,7 +36,6 @@ export const router = new VueRouter({
       path: '/ask',
       name: 'ask', 
       component: AskView,
-      // component: () => import('../views/AskView.vue'),
       beforeEnter: (to, from, next) => {
         bus.$emit('start:spinner');
         store.dispatch('FETCH_ASK', to.name)
@@ -53,7 +51,6 @@ export const router = new VueRouter({
       path: '/jobs', 
       name: 'job',
       component: JobsView,
-      // component: () => import('../views/JobsView.vue'),
       beforeEnter: (to, from, next) => {
         bus.$emit('start:spinner');
         store.dispatch('FETCH_JOBS', to.name)
