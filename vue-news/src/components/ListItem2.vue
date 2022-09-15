@@ -1,7 +1,7 @@
 <template>
   <div class="list-container">
-    <ul class="news-list">
-      <li v-for="(item, index) in list" class="post" :key="index">
+    <ul class="news-list" @scroll="handleNotificationListScroll">
+      <li v-for="(item, index) in listItems" class="post" :key="index">
         <!-- 포인트 영역 -->
         <div class="points">
           {{ index | indexPlus }}
@@ -34,55 +34,56 @@
         </div>
       </li>
     </ul>
-    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 
 <script>
-import infiniteLoading from 'vue-infinite-loading';
 import { timeAgo } from '../utils/filters.js';
-import axios from 'axios';
-
-const api = 'https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty';
 
 export default {
-  components: {
-    infiniteLoading,
-  },
   data() {
     return {
       pageBefore: 0,
       pageAfter: 20,
-      list: [],
+      page: 1,
     };
   },
-  methods: {
-    infiniteHandler($state) {
-      console.log('met');
-      axios.get(api).then(({ data }) => {
-        const dln = data.length;
-        if (this.list.length < dln) {
-          const listId = data.slice(this.pageBefore, this.pageAfter);
-          
-          listId.forEach((id) => {
-            axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(({ data }) => {
-              this.list.push(data);
-            });
-          });
-          console.log('실행');
-          setTimeout(() => {
-            this.pageBefore += 20;
-            this.pageAfter += 20;
-            $state.loaded();
-          },1000);
-        } else {
-          $state.complete();
-        }
-      });
+  computed: {
+    listItems() {
+      const name = this.$route.name;
+      if (name === 'new') {
+        return this.$store.state.news;
+      } else if (name === 'ask') {
+        return this.$store.state.ask;
+      } else {
+        return this.$store.state.jobs;
+      }
     },
   },
   created() {
-    console.log('1');
+    this.page = 1;
+  },
+  methods: {
+    handleNotificationListScroll(e) {
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+      // 일정 한도 밑으로 내려오면 함수 실행
+      if (isAtTheBottom) {
+        setTimeout(() => this.handleLoadMore(), 500);
+      }
+    },
+    handleLoadMore() {
+      console.log('hi');
+      const name = this.$route.name;
+
+      if (name === 'new') {
+        this.$store.dispatch('FETCH_NEWS_PUSH', name);
+      } else if (name === 'ask') {
+        this.$store.dispatch('FETCH_NEWS_PUSH', name);
+      } else if (name === 'job') {
+        this.$store.dispatch('FETCH_NEWS_PUSH', name);
+      }
+    }
   },
   filters: {
     timeAgo,
@@ -90,12 +91,14 @@ export default {
       return tn + 1;
     }
   }
-};
+}
 </script>
 
 <style scoped>
 .news-list {
   margin:0; padding:0;
+  overflow:auto;
+  height:calc(100vh - 40px);
   box-sizing:border-box;
 }
 .post {

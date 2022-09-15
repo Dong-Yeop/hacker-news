@@ -16,5 +16,13 @@ export default {
   },
   SET_LIST(state, list){
     state.list = list;
-  }
+  },
+  // async SET_NEWS_PUSH(state, news){
+  //   let arr = news;
+  //   let obj = {};
+  //   await arr.forEach((element, index) => {
+  //     obj['key' + index] = element;
+  //   });
+  //   state.news.push(obj);
+  // },
 }

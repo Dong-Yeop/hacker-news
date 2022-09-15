@@ -1,9 +1,14 @@
-import { fetchNewsList, fetchUserInfo, fetchItemInfo, } from '../api/index.js';
+import { fetchNewsList, fetchNewsList2, fetchUserInfo, fetchItemInfo, } from '../api/index.js';
 
 export default {
   async FETCH_NEWS({ commit }, pageName) {
     const response = await fetchNewsList(pageName);
     commit('SET_NEWS', response);
+    return response;
+  },
+  async FETCH_NEWS_PUSH({ commit }, pageName) {
+    const response = await fetchNewsList2(pageName);
+    commit('SET_NEWS_PUSH', response);
     return response;
   },
   async FETCH_ASK({ commit }, pageName) {

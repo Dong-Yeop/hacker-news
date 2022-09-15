@@ -39,10 +39,10 @@ export default {
     // .env
     // console.log(process.env.VUE_APP_TITLE);
   },
-  // beforeDestroy() {
-  //   bus.$off('start:spinner', this.startSpinner);
-  //   bus.$off('end:spinner', this.endSpinner);
-  // }
+  beforeDestroy() {
+    bus.$off('start:spinner', this.startSpinner);
+    bus.$off('end:spinner', this.endSpinner);
+  }
 }
 </script>
 

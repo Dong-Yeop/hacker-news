@@ -8,7 +8,7 @@ async function fetchGetNews(pageName) {
   try {
     let itemId = [];
     const response = await axios.get(`${config.baseUrl}${pageName}stories.json?print=pretty`);
-    itemId = response.data.slice(0,20);
+    itemId = response.data.slice(0, 20);
     return itemId;
   } catch (error) {
     console.log(error);
@@ -16,8 +16,32 @@ async function fetchGetNews(pageName) {
 }
 
 async function fetchNewsList(pageName) {
+  console.log('2');
   let items = [];
   fetchGetNews(pageName).then(itemId => {
+    itemId.forEach(id => {
+      axios.get(`${config.baseUrl}item/${id}.json`).then( res => {
+        items.push(res.data);
+      });
+    });
+  });
+  return items;
+}
+
+export async function fetchGetNews2(pageName) {
+  try {
+    let itemId = [];
+    const response = await axios.get(`${config.baseUrl}${pageName}stories.json?print=pretty`);
+    itemId = response.data.slice(20, 40);
+    return itemId;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchNewsList2(pageName) {
+  let items = [];
+  fetchGetNews2(pageName).then(itemId => {
     itemId.forEach(id => {
       axios.get(`${config.baseUrl}item/${id}.json`).then( res => {
         items.push(res.data);
@@ -45,15 +69,6 @@ async function fetchAskList() {
   }
 }
 
-async function fetchList(pageName) {
-  try {
-    const response = await axios.get(`${config.baseUrl}${pageName}/1.json`);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 function fetchUserInfo(username) {
   return axios.get(`${config.baseUrl}user/${username}.json`);
 }
@@ -67,7 +82,6 @@ export {
   fetchNewsList,
   fetchJobsList,
   fetchAskList,
-  fetchList,
   fetchUserInfo,
   fetchItemInfo,
   fetchGetNews,

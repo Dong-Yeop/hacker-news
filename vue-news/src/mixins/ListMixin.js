@@ -14,6 +14,8 @@ export default {
   //     });
   // },
   mounted() {
-    bus.$emit('end:spinner');
+    this.$nextTick(function () {
+      bus.$emit('end:spinner');
+    })
   }
 }
