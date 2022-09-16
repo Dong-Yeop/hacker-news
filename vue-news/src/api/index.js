@@ -28,7 +28,7 @@ async function fetchList(pageName) {
 }
 
 function fetchUserInfo(username) {
-  return axios.get(`${config.baseUrl}user/${username}.json`);
+  return axios.get(`${config.baseUrl}user/${username}.json?print=pretty`);
 }
 
 function fetchItemInfo(id) {

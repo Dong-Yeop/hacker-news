@@ -1,61 +1,62 @@
 <template>
-  <div>
-    <section>
-      <!-- 사용자 상세 정보 -->
-      <UserProfile :info="fetchedItem">
-        <router-link slot="username" :to="`/user/${fetchedItem.user}`">
-          {{ fetchedItem.user }}
-        </router-link> 
-        <template slot="time">{{ 'Posted ' + fetchedItem.time_ago }}</template>
-      </UserProfile>
-    </section>
-
-    <section>
+  <div class="item-container">
+    <div class="info">
       <h2>{{ fetchedItem.title }}</h2>
-    </section>
-
-    <section>
-      <!-- 질문 댓글 -->
-      <div v-html="fetchedItem.content"></div>
-    </section>
+      <small>
+        {{ fetchedItem.score }} points | by
+        <router-link v-bind:to="`/user/${fetchedItem.by}`" class="link-text">
+          {{ fetchedItem.by }}
+        </router-link> |
+        {{ fetchedItem.time | timeAgo }} ago
+      </small>
+      <p v-html="fetchedItem.text"></p>
+    </div>
   </div>
 </template>
 
 <script>
-import UserProfile from '../components/UserProfile.vue'
+import { timeAgo } from '../utils/filters.js';
 import { mapGetters } from 'vuex';
 import bus from '../utils/bus';
 
 export default {
-  components: {
-    UserProfile,
-  },
   computed: {
     ...mapGetters(['fetchedItem'])
   },
-  created() {
-    const item = this.$route.params.id;
-    this.$store.dispatch('FETCH_ITEM', item);
-  },
   mounted() {
     bus.$emit('end:spinner');
+  },
+  filters: {
+    timeAgo,
   }
 }
 </script>
 
 <style scoped>
-.user-container {
-  display:flex;
-  align-items:center;
-  padding:0.5rem;
+.item-container {
+  max-width:800px;
+  margin:0 auto;
+  background:#fff;
+  box-shadow: 0 2px 5px 0 rgb(0,0,0,.08);
+  padding: 25px 4%;
 }
-.fa-user {
-  font-size:2.5rem;
+.info h2 {
+  margin:0;
+  color:#34495e;
+  margin-bottom:6px;
+  font-size:22px;
 }
-.user-description {
-  padding-left:8px;
+.info small {
+  font-size:15px;
+  color:#828282;
 }
-.time {
-  font-size:0.7rem;
+.info small a {
+  color:inherit;
+}
+.info small a:hover {color:#42b883;}
+.info p {
+  font-size:16px;
+  line-height: 160%;
+  margin-top:20px;
 }
 </style>

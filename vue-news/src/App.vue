@@ -47,6 +47,7 @@ export default {
 body {
   padding:0;
   margin:0;
+  background:#F2F3F5;
 }
 a {
   text-decoration:none;

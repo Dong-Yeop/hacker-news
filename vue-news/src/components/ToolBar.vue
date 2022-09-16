@@ -4,19 +4,27 @@
       <h1 class="logo">
         <a href="/"><span>hacker news</span></a>
       </h1>
-      <router-link to="/News">News</router-link>
+      <router-link to="/News" :class="{'router-link-exact-active': newsActive()}">News</router-link>
       <router-link to="/Ask">Ask</router-link>
       <router-link to="/Jobs">Jobs</router-link>
+      <span>made with vue.js</span>
     </nav>
   </header>
 </template>
 
 <script>
 export default {
+  methods: {
+    newsActive() {
+      if(this.$route.name == 'new'){
+        return true;
+      }
+    },
+  },
   computed: {
     className() {
       return this.$route.name;
-    },
+    }
   },
 }
 </script>
@@ -36,6 +44,7 @@ header .inner {
   box-sizing:border-box;
   max-width:800px;
   margin:0 auto;
+  position: relative;
 }
 header a {
   color:#fff;
@@ -55,5 +64,17 @@ header .logo a {display:block; width:100%; height:100%;}
 header .logo a span {position:absolute; top:-9999px; left:-9999px;}
 header .inner > a {
   margin-right:30px;
+}
+header span {
+  font-size:14px; font-weight:300;
+  position:absolute;
+  top:50%; right:20px;
+  transform:translateY(-50%);
+}
+
+@media screen and (max-width:1024px){
+  header .inner {
+    padding:0 14px;
+  }
 }
 </style>

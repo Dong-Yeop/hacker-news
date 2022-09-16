@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @scroll="onScroll">
+  <div class="container" @scroll="onScroll" ref="scroll-list">
     <ul class="news-list" :class="className">
       <li v-for="(item, index) in listItems" class="post" :key="index">
         <!-- 포인트 영역 -->
@@ -22,11 +22,11 @@
             </template>
           </p>
           <small class="link-text" v-if="item.type === 'story'">
-            {{ item.score }} points |
-            {{ item.time | timeAgo }} ago | by
+            {{ item.score }} points | by
             <router-link v-bind:to="`/user/${item.by}`" class="link-text">
               {{ item.by }}
-            </router-link>
+            </router-link> |
+            {{ item.time | timeAgo }} ago
           </small>
           <small class="link-text" v-else>
             {{ item.time | timeAgo }} ago 
@@ -35,13 +35,13 @@
         </div>
       </li>
     </ul>
+    <i class="fa-regular fa-circle-up top" :class="className" @click="scrollMoveTop"></i>
   </div>
 </template>
 
 <script>
 import { timeAgo, host } from '../utils/filters.js';
 import axios from 'axios';
-import bus from '../utils/bus';
 
 const baseUrl = 'https://hacker-news.firebaseio.com/v0/';
 
@@ -69,15 +69,8 @@ export default {
     },
   },
   methods: {
-    infiniteHandler() {
-      const name = this.$route.name;
-      if (name === 'new') {
-        console.log(name)
-      } else if (name === 'ask') {
-        console.log(name)
-      } else if (name === 'job') {
-        console.log(name)
-      }
+    scrollMoveTop() {
+      this.$refs["scroll-list"].scroll({ top: 0, behavior: "smooth" });
     },
     onScroll(e) {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
@@ -128,9 +121,9 @@ export default {
 
 <style scoped>
 .container {
+  scroll-behavior: smooth;
   overflow:auto;
   height:calc(100vh - 60px);
-  background:#F2F3F5;
   padding-top:20px;
   padding-bottom:20px;
 }
@@ -145,9 +138,13 @@ export default {
   display:flex;
   align-items:center;
   border-bottom:1px solid #eee;
+  padding:3px 10px 3px 0;
 }
 .points {
-  width:80px; height:60px;
+  flex-shrink: 0;
+  width:10%; height:60px;
+  max-width:80px;
+  min-width:50px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -166,5 +163,21 @@ export default {
 }
 .link-text a:hover {
   color:#42b883;
+}
+.top {
+  position:fixed; bottom:40px; right:40px;
+  color:#42b883;
+  font-size:40px;
+  cursor:pointer;
+  transition:color 1s ease;
+}
+.top.ask {color:#f60;}
+.top.job {color:#990000;}
+
+@media screen and (max-width:1024px){
+  .container {
+    padding-left:15px;
+    padding-right:15px;
+  }
 }
 </style>

@@ -65,10 +65,30 @@ export const router = new VueRouter({
     {
       path: '/user/:id',
       component: UserView,
+      beforeEnter: (to, from, next) => {
+        bus.$emit('start:spinner');
+        store.dispatch('FETCH_USER', to.params.id)
+          .then(() => {
+            next();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
     },
     {
       path: '/item/:id',
-      component: ItemView
+      component: ItemView,
+      beforeEnter: (to, from, next) => {
+        bus.$emit('start:spinner');
+        store.dispatch('FETCH_ITEM', to.params.id)
+          .then(() => {
+            next();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
     },
   ]
 });

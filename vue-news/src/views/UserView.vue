@@ -1,14 +1,16 @@
 <template>
   <div>
     <UserProfile :info="userInfo">
-      <div slot="username">{{ userInfo.id }}</div>
-      <span slot="time">{{ 'Joined ' + userInfo.created }}, </span>
-      <span slot="karma">{{ userInfo.karma }}</span>
+      <div slot="username"><h2>User : {{ userInfo.id }}</h2></div>
+      <span slot="created"><i>Created:</i>{{ userInfo.created | timeAgo }} ago</span>
+      <span slot="karma"><i>Karma:</i>{{ userInfo.karma }}</span>
+      <p v-if="userInfo.about" v-html="userInfo.about" slot="about" class="about"></p>
     </UserProfile>
   </div>
 </template>
 
 <script>
+import { timeAgo } from '../utils/filters.js';
 import UserProfile from '../components/UserProfile.vue';
 import bus from '../utils/bus';
 
@@ -21,12 +23,11 @@ export default {
       return this.$store.state.user;
     }
   },
-  created() {
-    const userName = this.$route.params.id;
-    this.$store.dispatch('FETCH_USER', userName);
-  },
   mounted() {
     bus.$emit('end:spinner');
+  },
+  filters: {
+    timeAgo,
   }
 }
 </script>
